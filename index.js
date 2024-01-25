@@ -31,17 +31,13 @@ app.get('/dolar-ptax', async (req, res) => {
 
     const data = response.data.value[0];
 
-    res.json({
+    res.json([{
       cotacaoCompra: data.cotacaoCompra,
       cotacaoVenda: data.cotacaoVenda,
       dataHoraCotacao: data.dataHoraCotacao,
-    });
+    }]);
   } catch (error) {
     console.error('Erro ao obter a cotação do dólar PTAX:', error.message);
     res.status(500).json({ error: 'Erro ao obter a cotação do dólar PTAX' });
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
 });
