@@ -6,8 +6,6 @@ export class AppController {
   @Get('/dolar-ptax')
   async getDolarPtax(): Promise<any> {
     try {
-      console.log('Entrou no método getDolarPtax');
-
       // Obter a data de hoje
       const hoje = new Date();
 
