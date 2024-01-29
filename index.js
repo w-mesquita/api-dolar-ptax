@@ -1,10 +1,6 @@
-const express = require('express');
 const axios = require('axios');
 
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.get('/cotacao-dolar', async (req, res) => {
+exports.handler = async (event, context) => {
   try {
     const hoje = new Date();
     const ontem = new Date();
@@ -27,25 +23,20 @@ app.get('/cotacao-dolar', async (req, res) => {
 
     const data = response.data.value[0];
 
-    res.status(200).json([{
-      cotacaoCompra: data.cotacaoCompra,
-      cotacaoVenda: data.cotacaoVenda,
-      dataHoraCotacao: data.dataHoraCotacao,
-    }]);
+    return {
+      statusCode: 200,
+      body: JSON.stringify([{
+        cotacaoCompra: data.cotacaoCompra,
+        cotacaoVenda: data.cotacaoVenda,
+        dataHoraCotacao: data.dataHoraCotacao,
+      }]),
+    };
   } catch (error) {
     console.error('Erro ao obter a cotação do dólar PTAX:', error.message);
-    res.status(500).json({ error: 'Erro ao obter a cotação do dólar PTAX' });
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Erro ao obter a cotação do dólar PTAX' }),
+    };
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-
-process.on('SIGTERM', () => {
-  console.log('Received SIGTERM. Shutting down gracefully...');
-  server.close(() => {
-    console.log('Server closed. Exiting process.');
-    process.exit(0);
-  });
-});
+};
