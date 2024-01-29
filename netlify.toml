@@ -1,5 +1,5 @@
 [build]
-  command = "node index.js"
+  command = "node functions/index.js"
   functions = "functions"
 
 [dev]
