@@ -1,13 +1,16 @@
 [build]
-  command = "npm install"  # Instala as dependências
-  publish = "."  # Publica todos os arquivos no diretório atual
+  command = "node index.js"
+  functions = "functions"
+
+[dev]
+  functions = "functions"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-[[redirects]]
-  from = "/dolar-ptax/*"
-  to = "/index.html"
-  status = 200
+[[headers]]
+  for = "/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
