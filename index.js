@@ -1,15 +1,15 @@
+const express = require('express');
 const axios = require('axios');
 
-exports.handler = async (event, context) => {
-  try {
-    // Obter a data de hoje
-    const hoje = new Date();
+const app = express();
+const port = process.env.PORT || 3000;
 
-    // Obter a data de ontem
+app.get('/cotacao-dolar', async (req, res) => {
+  try {
+    const hoje = new Date();
     const ontem = new Date();
     ontem.setDate(hoje.getDate() - 1);
 
-    // Formatando as datas para o formato 'MM-DD-YYYY'
     const dataHoje = hoje.toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
@@ -27,20 +27,17 @@ exports.handler = async (event, context) => {
 
     const data = response.data.value[0];
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify([{
-        cotacaoCompra: data.cotacaoCompra,
-        cotacaoVenda: data.cotacaoVenda,
-        dataHoraCotacao: data.dataHoraCotacao,
-      }]),
-    };
+    res.status(200).json([{
+      cotacaoCompra: data.cotacaoCompra,
+      cotacaoVenda: data.cotacaoVenda,
+      dataHoraCotacao: data.dataHoraCotacao,
+    }]);
   } catch (error) {
     console.error('Erro ao obter a cotação do dólar PTAX:', error.message);
-
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Erro ao obter a cotação do dólar PTAX' }),
-    };
+    res.status(500).json({ error: 'Erro ao obter a cotação do dólar PTAX' });
   }
-};
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
